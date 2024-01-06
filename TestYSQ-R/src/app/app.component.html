@@ -1,1 +1,13 @@
-Hallo World!!
+<mat-radio-group aria-label="Select an option" [formControl]="score">
+  <mat-radio-button value="1">1.まったく当てはまらない</mat-radio-button>
+  <mat-radio-button value="2">2.ほとんど当てはまらない</mat-radio-button>
+  <mat-radio-button value="3">3.どちらかと言えば当てはまる</mat-radio-button>
+  <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
+  <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
+  <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
+</mat-radio-group>
+<button mat-raised-button color="primary" (click)="getScore()">点数取得</button>
+<mat-form-field class="example-full-width">
+  <mat-label></mat-label>
+  <input matInput [formControl]="scoreText">
+</mat-form-field>

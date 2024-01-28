@@ -1,14 +1,19 @@
 <form [formGroup]="statementsGroup">
-  <li *ngFor="let statement of problemStatements;let i = index">
-    <div>{{ statement }}</div>
-    <mat-radio-group aria-label="Select an option" formControlName="score_{{i}}">
-      <mat-radio-button value=1>1.まったく当てはまらない</mat-radio-button>
-      <mat-radio-button value=2>2.ほとんど当てはまらない</mat-radio-button>
-      <mat-radio-button value=3>3.どちらかと言えば当てはまる</mat-radio-button>
-      <mat-radio-button value=4>4.まぁまぁ当てはまる</mat-radio-button>
-      <mat-radio-button value=5>5.ほとんど当てはまる</mat-radio-button>
-      <mat-radio-button value=6>6.完璧に当てはまる</mat-radio-button>
-    </mat-radio-group>
+  <li *ngFor="let statement of problemStatements">
+    <div>{{ statement.blockTitele }}</div>
+    <ul>
+      <li *ngFor="let problem of statement.problemStatement;let i = index">
+        <div>{{ problem }}</div>
+      <mat-radio-group aria-label="Select an option" formControlName="score_{{i}}">
+        <mat-radio-button value=1>1.まったく当てはまらない</mat-radio-button>
+        <mat-radio-button value=2>2.ほとんど当てはまらない</mat-radio-button>
+        <mat-radio-button value=3>3.どちらかと言えば当てはまる</mat-radio-button>
+        <mat-radio-button value=4>4.まぁまぁ当てはまる</mat-radio-button>
+        <mat-radio-button value=5>5.ほとんど当てはまる</mat-radio-button>
+        <mat-radio-button value=6>6.完璧に当てはまる</mat-radio-button>
+      </mat-radio-group>
+      </li>
+    </ul>
   </li>
 </form>
 <button mat-raised-button color="primary" (click)="getScore()">点数取得</button>

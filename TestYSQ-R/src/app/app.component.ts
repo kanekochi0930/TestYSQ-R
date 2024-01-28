@@ -7,6 +7,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProblemStatement } from './interface/problem-statement';
+import { YsqrProblemStatements } from './const/ysqrProblemStatement';
 
 @Component({
   selector: 'app-root',
@@ -20,21 +22,25 @@ export class AppComponent {
   statementsGroup:FormGroup = new FormGroup({});
   score = new FormControl<number>(0);
   scoreText = new FormControl<number|null>(null);
-  problemStatements = ["テスト１","テスト２","テスト３","テスト４"]
+  
+  problemStatements:ProblemStatement[] = YsqrProblemStatements;
 
+  
   public getScore(){
     var totaling = 0;
-    this.problemStatements.forEach((statment,index) =>{
-      totaling += +this.statementsGroup.get("score_"+index)?.value
-    }
-    )
+    this.problemStatements.forEach((blockTitle) =>{
+      blockTitle.problemStatement.forEach((_,index)=>{
+        totaling += +this.statementsGroup.get("score_"+index)?.value
+      })
+    })
     this.scoreText.setValue(totaling);
   }
 
   public ngOnInit(){
-    this.problemStatements.forEach((statment,index) =>{
+    this.problemStatements.forEach((blockTitle) =>{
+      blockTitle.problemStatement.forEach((_,index)=>{
       this.statementsGroup.addControl("score_"+index,new FormControl<number>(0))
-    }
-    )
+      })
+    })
   }
 }

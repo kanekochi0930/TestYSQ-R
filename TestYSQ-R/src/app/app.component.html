@@ -4,7 +4,7 @@
     <ul>
       <li *ngFor="let problem of statement.problemStatement;let i = index">
         <div>{{ problem }}</div>
-      <mat-radio-group aria-label="Select an option" formControlName="score_{{i}}">
+      <mat-radio-group aria-label="Select an option" formControlName="score_{{statement.blockTitele }}_{{i}}">
         <mat-radio-button value=1>1.まったく当てはまらない</mat-radio-button>
         <mat-radio-button value=2>2.ほとんど当てはまらない</mat-radio-button>
         <mat-radio-button value=3>3.どちらかと言えば当てはまる</mat-radio-button>

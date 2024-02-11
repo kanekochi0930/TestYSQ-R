@@ -22,15 +22,13 @@ export class AppComponent {
   statementsGroup:FormGroup = new FormGroup({});
   score = new FormControl<number>(0);
   scoreText = new FormControl<number|null>(null);
-  
   problemStatements:ProblemStatement[] = YsqrProblemStatements;
-
   
   public getScore(){
     var totaling = 0;
     this.problemStatements.forEach((blockTitle) =>{
       blockTitle.problemStatement.forEach((_,index)=>{
-        totaling += +this.statementsGroup.get("score_"+index)?.value
+        totaling += +this.statementsGroup.get("score_"+blockTitle.blockTitele+"_"+index)?.value
       })
     })
     this.scoreText.setValue(totaling);
@@ -39,7 +37,7 @@ export class AppComponent {
   public ngOnInit(){
     this.problemStatements.forEach((blockTitle) =>{
       blockTitle.problemStatement.forEach((_,index)=>{
-      this.statementsGroup.addControl("score_"+index,new FormControl<number>(0))
+      this.statementsGroup.addControl("score_"+blockTitle.blockTitele+"_"+index,new FormControl<number>(0))
       })
     })
   }

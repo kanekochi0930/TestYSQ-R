@@ -17,6 +17,7 @@
   </li>
 </form>
 <button mat-raised-button color="primary" (click)="getScore()">点数取得</button>
+<div *ngFor="let notAnswered of notAnswereds;">{{notAnswered}}</div>
 <table mat-table [dataSource]="tableDataSorce">
   <!-- 列定義 -->
   <ng-container matColumnDef="blockTitele">
@@ -27,7 +28,6 @@
     <th mat-header-cell *matHeaderCellDef> 合計点数 </th>
     <td mat-cell *matCellDef="let problem"> {{ problem.totaling }} </td>
   </ng-container>
-
   <!-- 行定義 -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

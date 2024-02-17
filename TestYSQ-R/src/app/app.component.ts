@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {MatRadioModule} from '@angular/material/radio';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -28,26 +28,37 @@ export class AppComponent {
   problemStatements:ProblemStatement[] = YsqrProblemStatements;
   problemTotalingScores:ProblemTotalingScore[] =[];
   tableDataSorce:MatTableDataSource<ProblemTotalingScore>= new MatTableDataSource<ProblemTotalingScore>;
-
+  notAnswereds:string[]=[];
   displayedColumns: string[] = ['blockTitele', 'totaling'];
   
   public getScore(){
+    this.problemTotalingScores= [];
+    this.notAnswereds=[];
+    // 問題毎に、合計を計算
     this.problemStatements.forEach((problem) =>{
       var totaling = 0;
       problem.problemStatement.forEach((_,index)=>{
-        totaling += +this.statementsGroup.get("score_"+problem.blockTitele+"_"+index)?.value
+        var score = +this.statementsGroup.get("score_"+problem.blockTitele+"_"+index)?.value
+        if(score == 0){
+          this.notAnswereds.push(problem.blockTitele+'のNo.'+(index+1)+'が未回答です。')
+        }
+        totaling += score
       })
       const scoreData :ProblemTotalingScore ={ blockTitele:problem.blockTitele , totaling:totaling}
       this.problemTotalingScores.push(scoreData)
     })
-    this.tableDataSorce = new MatTableDataSource<ProblemTotalingScore>(this.problemTotalingScores.sort((a,b) => b.totaling-a.totaling))
-    this.problemTotalingScores= [];
+    // ここキモいから直したい。
+    if(!this.notAnswereds){
+      this.tableDataSorce = new MatTableDataSource<ProblemTotalingScore>(this.problemTotalingScores.sort((a,b) => b.totaling-a.totaling))
+    }
   }
 
   public ngOnInit(){
     this.problemStatements.forEach((problem) =>{
       problem.problemStatement.forEach((_,index)=>{
-      this.statementsGroup.addControl("score_"+problem.blockTitele+"_"+index,new FormControl<number>(0))
+      this.statementsGroup.addControl(
+        "score_"+problem.blockTitele+"_"+index,
+        new FormControl<number>(0,{nonNullable:true}))//,validators:[Validators.required]これをつけて、ラジオボタンを入力しても、validで必ずTrueが返ってしまう。
       })
     })
   }

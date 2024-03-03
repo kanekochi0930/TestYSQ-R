@@ -6,6 +6,7 @@ import { ProblemStatement } from '../../interface/problem-statement';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-problem-list',
@@ -22,26 +23,29 @@ export class ProblemListComponent {
   problemAverageScores: ProblemAverageScore[] = [];
   notAnswereds: string[] = [];
 
+  constructor(private router: Router) {}
+
   public getScore() {
-    this.problemAverageScores = [];
-    this.notAnswereds = [];
-    // 問題毎に、合計を計算
-    this.problemStatements.forEach((problem) => {
-      var totaling = 0;
-      problem.problemStatement.forEach((_, index) => {
-        var score = +this.statementsGroup.get('score_' + problem.blockTitele + '_' + index)?.value;
-        if (score == 0) {
-          this.notAnswereds.push(problem.blockTitele + 'のNo.' + (index + 1) + 'が未回答です。');
-        }
-        totaling += score;
-      });
-      var average = totaling / problem.problemStatement.length;
-      const scoreData: ProblemAverageScore = {
-        blockTitele: problem.blockTitele,
-        average: average,
-      };
-      this.problemAverageScores.push(scoreData);
-    });
+    this.router.navigate(['/result']);
+    // this.problemAverageScores = [];
+    // this.notAnswereds = [];
+    // // 問題毎に、合計を計算
+    // this.problemStatements.forEach((problem) => {
+    //   var totaling = 0;
+    //   problem.problemStatement.forEach((_, index) => {
+    //     var score = +this.statementsGroup.get('score_' + problem.blockTitele + '_' + index)?.value;
+    //     if (score == 0) {
+    //       this.notAnswereds.push(problem.blockTitele + 'のNo.' + (index + 1) + 'が未回答です。');
+    //     }
+    //     totaling += score;
+    //   });
+    //   var average = totaling / problem.problemStatement.length;
+    //   const scoreData: ProblemAverageScore = {
+    //     blockTitele: problem.blockTitele,
+    //     average: average,
+    //   };
+    //   this.problemAverageScores.push(scoreData);
+    // });
     // ここキモいから直したい。
     // if (!this.notAnswereds.length) {
     //   this.tableDataSorce = new MatTableDataSource<ProblemAverageScore>(

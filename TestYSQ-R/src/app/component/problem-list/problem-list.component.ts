@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { YsqrProblemStatements } from '../../const/ysqrProblemStatement';
 import { ProblemAverageScoreQuery as ProblemAverageScoreUrlQuery } from '../../interface/ploblem-average-score';
 import { ProblemStatement } from '../../interface/problem-statement';
@@ -22,29 +22,21 @@ export class ProblemListComponent {
 
   constructor(private router: Router) {}
 
-  public getScore() {
+  public getAverageScore() {
     this.notAnswereds = [];
     const problemAverageScoreUrlQuery: ProblemAverageScoreUrlQuery = {};
-    // 問題毎に、平均を計算しクエリパラメータに設定し遷移。
+    if (this.statementsGroup.invalid) {
+      return;
+    }
     this.problemStatements.forEach((problem) => {
       var totaling = 0;
       problem.problemStatement.forEach((_, index) => {
-        var score = +this.statementsGroup.get('score_' + problem.blockTitele + '_' + index)?.value;
-        if (score == 0) {
-          this.notAnswereds.push(problem.blockTitele + 'のNo.' + (index + 1) + 'が未回答です。');
-        }
-        totaling += score;
+        var control = this.statementsGroup.get('score_' + problem.blockTitele + '_' + index);
+        totaling += +control?.value;
       });
       var average = totaling / problem.problemStatement.length;
-      problemAverageScoreUrlQuery[problem.blockTitele] = average;
+      problemAverageScoreUrlQuery[problem.blockTitele] = Math.round(average * 10) / 10;
     });
-    // ここキモいから直したい。
-    // if (!this.notAnswereds.length) {
-    //   this.tableDataSorce = new MatTableDataSource<ProblemAverageScore>(
-    //     this.problemAverageScores.sort((a, b) => b.average - a.average)
-    //   );
-    // }
-
     this.router.navigate(['/result'], { queryParams: problemAverageScoreUrlQuery });
   }
 
@@ -53,8 +45,8 @@ export class ProblemListComponent {
       problem.problemStatement.forEach((_, index) => {
         this.statementsGroup.addControl(
           'score_' + problem.blockTitele + '_' + index,
-          new FormControl<number>(0, { nonNullable: true })
-        ); //,validators:[Validators.required]これをつけて、ラジオボタンを入力しても、validで必ずTrueが返ってしまう。
+          new FormControl<number | null>(null, { validators: [Validators.required] })
+        );
       });
     });
   }

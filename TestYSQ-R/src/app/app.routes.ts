@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { ProblemAnswerComponent } from './page/problem-answer/problem-answer.component';
+import { ProblemListComponent } from './component/problem-list/problem-list.component';
 import { ProblemResultComponent } from './page/problem-result/problem-result.component';
 
 export const routes: Routes = [
-  { path: 'question', component: ProblemAnswerComponent },
+  { path: '', component: ProblemListComponent },
   {
     path: 'result',
     component: ProblemResultComponent,

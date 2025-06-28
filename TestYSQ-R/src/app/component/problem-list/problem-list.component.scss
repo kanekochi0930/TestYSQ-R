@@ -46,12 +46,16 @@
 .problem-statement-card {
   width: 100%;
   /* Adjust shadow and border for a less floating look */
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
-  border: 1px solid #f0f0f0; /* Light border */
   background-color: #ffffff; /* Explicitly set for light mode */
+  box-shadow: none !important; /* Remove default mat-card shadow */
+
+  mat-card-title {
+    font-size: 0.8rem; /* Smaller font size for the question number */
+  }
 }
+
 .problem-text {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 1.5rem;
 }
 

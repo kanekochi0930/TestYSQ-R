@@ -23,7 +23,8 @@
   cursor: pointer; /* Add cursor pointer to indicate clickability */
 }
 
-.result-item:hover { /* Add hover effect */
+.result-item:hover {
+  /* Add hover effect */
   background-color: #f5f5f5; /* Lighter background on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   transform: translateY(-2px); /* Slightly lift the item */
@@ -74,7 +75,6 @@ mat-card-actions {
 
 .details-section {
   margin-top: 1rem;
-  padding-top: 1rem;
   border-top: 1px solid #eee;
 }
 

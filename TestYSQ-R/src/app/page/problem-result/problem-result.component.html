@@ -2,9 +2,7 @@
   <mat-card class="result-card">
     <mat-card-header>
       <mat-card-title>診断結果</mat-card-title>
-      <mat-card-subtitle
-        >平均点が4.0以上の項目は、特に強いスキーマを示唆しています。</mat-card-subtitle
-      >
+      <mat-card-subtitle>平均点が4.0以上の項目は、特に強い性格を示唆しています。</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <div class="result-list">
@@ -17,9 +15,7 @@
           <div class="result-label">
             <span class="block-title"
               >{{ result.blockTitele }} - {{ result.name }}
-              <span *ngIf="result.isStrong" class="strong-badge"
-                >★特に強い</span
-              ></span
+              <span *ngIf="result.isStrong" class="strong-badge">★特に強い</span></span
             >
             <span class="average-score">{{ result.average.toFixed(1) }}</span>
           </div>
@@ -30,23 +26,17 @@
             [value]="(result.average / maxScore) * 100"
           ></mat-progress-bar>
 
-          <div
-            *ngIf="selectedBlockTitle === result.blockTitele"
-            class="details-section"
-          >
-            <h3>{{ result.name }} ({{ result.blockTitele }})</h3>
-            <h4>スキーマの中核説明:</h4>
+          <div *ngIf="selectedBlockTitle === result.blockTitele" class="details-section">
+            <h4>悪い性格の説明:</h4>
             <p>{{ result.description }}</p>
-            <h4>改善アイデア:</h4>
+            <h4>改善案:</h4>
             <p>{{ result.improvement }}</p>
           </div>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="retakeTest()">
-        もう一度診断する
-      </button>
+      <button mat-raised-button color="primary" (click)="retakeTest()">もう一度診断する</button>
     </mat-card-actions>
   </mat-card>
 </div>

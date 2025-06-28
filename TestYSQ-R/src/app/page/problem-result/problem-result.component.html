@@ -2,16 +2,29 @@
   <mat-card class="result-card">
     <mat-card-header>
       <mat-card-title>診断結果</mat-card-title>
+      <mat-card-subtitle
+        >平均点が4.0以上の項目は、特に強いスキーマを示唆しています。</mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-content>
       <div class="result-list">
-        <div *ngFor="let result of results" class="result-item">
+        <div
+          *ngFor="let result of results"
+          class="result-item"
+          [class.strong-schema]="result.isStrong"
+        >
           <div class="result-label">
-            <span class="block-title">{{ result.blockTitele }}</span>
+            <span class="block-title"
+              >{{ result.blockTitele }} - {{ result.description }}
+              <span *ngIf="result.isStrong" class="strong-badge"
+                >★特に強い</span
+              ></span
+            >
             <span class="average-score">{{ result.average.toFixed(1) }}</span>
           </div>
           <mat-progress-bar
             class="score-bar"
+            [color]="result.isStrong ? 'warn' : 'primary'"
             mode="determinate"
             [value]="(result.average / maxScore) * 100"
           ></mat-progress-bar>

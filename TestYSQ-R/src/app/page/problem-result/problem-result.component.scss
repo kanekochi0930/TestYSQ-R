@@ -16,7 +16,14 @@
 }
 
 .result-item {
-  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.result-item.strong-schema {
+  background-color: #fff0f0;
 }
 
 .result-label {
@@ -24,15 +31,27 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+  gap: 1rem;
 }
 
 .block-title {
   font-weight: 500;
+  flex-shrink: 1;
+}
+
+.strong-badge {
+  background-color: #ff4081;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
 }
 
 .average-score {
   font-size: 1.2rem;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
 .score-bar {

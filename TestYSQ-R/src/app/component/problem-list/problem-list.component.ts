@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -57,12 +57,15 @@ interface FlatProblem {
     ]),
   ],
 })
-export class ProblemListComponent implements OnInit {
+export class ProblemListComponent implements OnInit, AfterViewChecked {
+  @ViewChild('currentCardWrapper') currentCardElement!: ElementRef;
+
   statementsGroup: FormGroup = new FormGroup({});
   problemStatements: ProblemStatement[] = YsqrProblemStatements;
   flatProblems: FlatProblem[] = [];
   currentIndex = 0;
   animationDirection: 'left' | 'right' = 'left'; // Default direction
+  cardContainerHeight: string = 'auto';
   private readonly answersKey = 'ysqr_answers';
   private readonly indexKey = 'ysqr_currentIndex';
 
@@ -89,6 +92,20 @@ export class ProblemListComponent implements OnInit {
     this.statementsGroup.valueChanges.subscribe((values) => {
       localStorage.setItem(this.answersKey, JSON.stringify(values));
     });
+  }
+
+  ngAfterViewChecked() {
+    // Add a small delay to ensure the card content has rendered and its height is stable
+    setTimeout(() => {
+      if (this.currentCardElement) {
+        const height = this.currentCardElement.nativeElement.offsetHeight;
+        console.log('Calculated animated-card-wrapper height:', height); // Debugging line
+        // Only update if the height has changed to prevent infinite change detection loop
+        if (this.cardContainerHeight !== `${height}px`) {
+          this.cardContainerHeight = `${height}px`;
+        }
+      }
+    }, 0); // A 0ms timeout pushes the execution to the next tick of the event loop
   }
 
   private loadState() {

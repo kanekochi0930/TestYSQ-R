@@ -8,36 +8,37 @@
     <span class="progress-label">{{ progress.toFixed(0) }}%</span>
   </div>
 
-  <div class="card-container">
+  <div class="card-container" [style.minHeight]="cardContainerHeight">
     <form [formGroup]="statementsGroup">
       <ng-container *ngFor="let problem of flatProblems; let i = index">
-        <div *ngIf="currentIndex === i" [@cardAnimation]="animationDirection" class="animated-card-wrapper">
-          <mat-card class="statement-card">
+        <div *ngIf="currentIndex === i" [@cardAnimation]="animationDirection" class="animated-card-wrapper" #currentCardWrapper>
+          <mat-card class="problem-statement-card">
             <mat-card-header>
               <mat-card-title>{{ problem.blockTitele }}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <p class="problem-text">{{ problem.problemStatement }}</p>
-              <mat-radio-group
-                class="radio-group"
-                [formControlName]="problem.formControlName"
-                (change)="onSelectionChange()"
-              >
-                <mat-radio-button value="1"
-                  >1.まったく当てはまらない</mat-radio-button
-                >
-                <mat-radio-button value="2"
-                  >2.ほとんど当てはまらない</mat-radio-button
-                >
-                <mat-radio-button value="3"
-                  >3.どちらかと言えば当てはまる</mat-radio-button
-                >
-                <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
-                <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
-                <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
-              </mat-radio-group>
             </mat-card-content>
           </mat-card>
+
+          <mat-radio-group
+            class="radio-group"
+            [formControlName]="problem.formControlName"
+            (change)="onSelectionChange()"
+          >
+            <mat-radio-button value="1"
+              >1.まったく当てはまらない</mat-radio-button
+            >
+            <mat-radio-button value="2"
+              >2.ほとんど当てはまらない</mat-radio-button
+            >
+            <mat-radio-button value="3"
+              >3.どちらかと言えば当てはまる</mat-radio-button
+            >
+            <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
+            <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
+            <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
+          </mat-radio-group>
         </div>
       </ng-container>
     </form>

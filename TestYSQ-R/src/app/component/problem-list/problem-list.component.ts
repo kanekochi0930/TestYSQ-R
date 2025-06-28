@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ProblemAverageScoreQuery } from '../../interface/problem-average-score';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 interface FlatProblem {
   blockTitele: string;
@@ -35,12 +36,33 @@ interface FlatProblem {
   ],
   templateUrl: './problem-list.component.html',
   styleUrl: './problem-list.component.scss',
+  animations: [
+    trigger('cardAnimation', [
+      transition('* => left', [
+        style({ transform: 'translateX(100%)', opacity: 0, position: 'absolute' }),
+        animate('300ms ease-out', style({ transform: 'translateX(0%)', opacity: 1 })),
+      ]),
+      transition('* => right', [
+        style({ transform: 'translateX(-100%)', opacity: 0, position: 'absolute' }),
+        animate('300ms ease-out', style({ transform: 'translateX(0%)', opacity: 1 })),
+      ]),
+      transition('left => void', [
+        style({ transform: 'translateX(0%)', opacity: 1 }),
+        animate('300ms ease-out', style({ transform: 'translateX(-100%)', opacity: 0 })),
+      ]),
+      transition('right => void', [
+        style({ transform: 'translateX(0%)', opacity: 1 }),
+        animate('300ms ease-out', style({ transform: 'translateX(100%)', opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class ProblemListComponent implements OnInit {
   statementsGroup: FormGroup = new FormGroup({});
   problemStatements: ProblemStatement[] = YsqrProblemStatements;
   flatProblems: FlatProblem[] = [];
   currentIndex = 0;
+  animationDirection: 'left' | 'right' = 'left'; // Default direction
   private readonly answersKey = 'ysqr_answers';
   private readonly indexKey = 'ysqr_currentIndex';
 
@@ -87,15 +109,13 @@ export class ProblemListComponent implements OnInit {
 
   onSelectionChange() {
     setTimeout(() => {
-      if (this.currentIndex < this.flatProblems.length - 1) {
-        this.currentIndex++;
-        this.saveCurrentIndex();
-      }
+      this.nextQuestion(); // Call nextQuestion to handle transition and direction
     }, 200);
   }
 
   nextQuestion() {
     if (this.currentIndex < this.flatProblems.length - 1) {
+      this.animationDirection = 'left'; // Moving to the next question (slide left)
       this.currentIndex++;
       this.saveCurrentIndex();
     }
@@ -103,6 +123,7 @@ export class ProblemListComponent implements OnInit {
 
   previousQuestion() {
     if (this.currentIndex > 0) {
+      this.animationDirection = 'right'; // Moving to the previous question (slide right)
       this.currentIndex--;
       this.saveCurrentIndex();
     }
@@ -117,7 +138,6 @@ export class ProblemListComponent implements OnInit {
 
   finish() {
     if (this.statementsGroup.invalid) {
-      this.statementsGroup.markAllAsTouched();
       return;
     }
 

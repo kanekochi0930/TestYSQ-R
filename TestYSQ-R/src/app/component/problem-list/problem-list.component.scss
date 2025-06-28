@@ -27,6 +27,16 @@
 .card-container {
   width: 100%;
   max-width: 600px;
+  position: relative; /* Add position relative */
+  min-height: 520px; /* Increased min-height to accommodate all radio buttons */
+  overflow: hidden; /* Hide overflowing content during animation */
+}
+
+.animated-card-wrapper {
+  position: absolute; /* Position absolutely for animation */
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
 .statement-card {

@@ -41,6 +41,8 @@ export class ProblemListComponent implements OnInit {
   problemStatements: ProblemStatement[] = YsqrProblemStatements;
   flatProblems: FlatProblem[] = [];
   currentIndex = 0;
+  private readonly answersKey = 'ysqr_answers';
+  private readonly indexKey = 'ysqr_currentIndex';
 
   constructor(private router: Router, private ysqrService: YsqrService) {}
 
@@ -59,12 +61,35 @@ export class ProblemListComponent implements OnInit {
         );
       });
     });
+
+    this.loadState();
+
+    this.statementsGroup.valueChanges.subscribe((values) => {
+      localStorage.setItem(this.answersKey, JSON.stringify(values));
+    });
+  }
+
+  private loadState() {
+    const savedAnswers = localStorage.getItem(this.answersKey);
+    if (savedAnswers) {
+      this.statementsGroup.patchValue(JSON.parse(savedAnswers));
+    }
+
+    const savedIndex = localStorage.getItem(this.indexKey);
+    if (savedIndex) {
+      this.currentIndex = parseInt(savedIndex, 10);
+    }
+  }
+
+  private saveCurrentIndex() {
+    localStorage.setItem(this.indexKey, this.currentIndex.toString());
   }
 
   onSelectionChange() {
     setTimeout(() => {
       if (this.currentIndex < this.flatProblems.length - 1) {
         this.currentIndex++;
+        this.saveCurrentIndex();
       }
     }, 200);
   }
@@ -72,17 +97,18 @@ export class ProblemListComponent implements OnInit {
   nextQuestion() {
     if (this.currentIndex < this.flatProblems.length - 1) {
       this.currentIndex++;
+      this.saveCurrentIndex();
     }
   }
 
   previousQuestion() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.saveCurrentIndex();
     }
   }
 
   get progress() {
-    // The number of answered questions determines the progress
     const answeredCount = Object.values(this.statementsGroup.controls).filter(
       (control) => control.valid
     ).length;
@@ -115,6 +141,9 @@ export class ProblemListComponent implements OnInit {
 
     const allScores = Object.values(this.statementsGroup.value) as number[];
     this.ysqrService.setScores(allScores);
+
+    localStorage.removeItem(this.answersKey);
+    localStorage.removeItem(this.indexKey);
 
     this.router.navigate(['/result'], {
       queryParams: problemAverageScoreUrlQuery,

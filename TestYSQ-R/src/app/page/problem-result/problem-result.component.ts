@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ProblemAverageScore } from '../../interface/ploblem-average-score';
+import { ProblemAverageScore } from '../../interface/problem-average-score';
 import { YsqrProblemStatements } from '../../const/ysqrProblemStatement';
 import { ActivatedRoute } from '@angular/router';
 

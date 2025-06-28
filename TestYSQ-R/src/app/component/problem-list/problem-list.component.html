@@ -1,23 +1,75 @@
-<form [formGroup]="statementsGroup">
-  <li *ngFor="let statement of problemStatements">
-    <div>{{ statement.blockTitele }}</div>
-    <ul>
-      <li *ngFor="let problem of statement.problemStatement; let i = index">
-        <div>{{ problem }}</div>
-        <mat-radio-group
-          aria-label="Select an option"
-          formControlName="score_{{ statement.blockTitele }}_{{ i }}"
-        >
-          <mat-radio-button value="1">1.まったく当てはまらない</mat-radio-button>
-          <mat-radio-button value="2">2.ほとんど当てはまらない</mat-radio-button>
-          <mat-radio-button value="3">3.どちらかと言えば当てはまる</mat-radio-button>
-          <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
-          <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
-          <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
-        </mat-radio-group>
-      </li>
-    </ul>
-  </li>
-</form>
-<button mat-raised-button color="primary" (click)="getAverageScore()">回答終了</button>
-<div *ngFor="let notAnswered of notAnswereds">{{ notAnswered }}</div>
+<div class="container">
+  <div class="progress-container">
+    <mat-progress-bar
+      mode="determinate"
+      [value]="progress"
+      class="progress-bar"
+    ></mat-progress-bar>
+    <span class="progress-label">{{ progress.toFixed(0) }}%</span>
+  </div>
+
+  <div class="card-container">
+    <form [formGroup]="statementsGroup">
+      <ng-container *ngFor="let problem of flatProblems; let i = index">
+        <mat-card class="statement-card" *ngIf="currentIndex === i">
+          <mat-card-header>
+            <mat-card-title>{{ problem.blockTitele }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="problem-text">{{ problem.problemStatement }}</p>
+            <mat-radio-group
+              class="radio-group"
+              [formControlName]="problem.formControlName"
+              (change)="onSelectionChange()"
+            >
+              <mat-radio-button value="1"
+                >1.まったく当てはまらない</mat-radio-button
+              >
+              <mat-radio-button value="2"
+                >2.ほとんど当てはまらない</mat-radio-button
+              >
+              <mat-radio-button value="3"
+                >3.どちらかと言えば当てはまる</mat-radio-button
+              >
+              <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
+              <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
+              <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
+            </mat-radio-group>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </form>
+  </div>
+
+  <div class="navigation-buttons">
+    <button
+      mat-stroked-button
+      (click)="previousQuestion()"
+      [disabled]="currentIndex === 0"
+    >
+      戻る
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="currentIndex < flatProblems.length - 1"
+      (click)="nextQuestion()"
+      [disabled]="!statementsGroup.controls[flatProblems[currentIndex].formControlName].valid"
+    >
+      次へ
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="currentIndex === flatProblems.length - 1"
+      (click)="finish()"
+      [disabled]="statementsGroup.invalid"
+    >
+      回答終了
+    </button>
+  </div>
+
+  <div class="error-message" *ngIf="statementsGroup.invalid && statementsGroup.touched">
+    すべての質問に回答してください。
+  </div>
+</div>

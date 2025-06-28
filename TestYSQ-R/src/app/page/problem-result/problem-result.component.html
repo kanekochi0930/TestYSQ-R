@@ -12,10 +12,11 @@
           *ngFor="let result of results"
           class="result-item"
           [class.strong-schema]="result.isStrong"
+          (click)="toggleDetails(result.blockTitele)"
         >
           <div class="result-label">
             <span class="block-title"
-              >{{ result.blockTitele }} - {{ result.description }}
+              >{{ result.blockTitele }} - {{ result.name }}
               <span *ngIf="result.isStrong" class="strong-badge"
                 >★特に強い</span
               ></span
@@ -28,6 +29,17 @@
             mode="determinate"
             [value]="(result.average / maxScore) * 100"
           ></mat-progress-bar>
+
+          <div
+            *ngIf="selectedBlockTitle === result.blockTitele"
+            class="details-section"
+          >
+            <h3>{{ result.name }} ({{ result.blockTitele }})</h3>
+            <h4>スキーマの中核説明:</h4>
+            <p>{{ result.description }}</p>
+            <h4>改善アイデア:</h4>
+            <p>{{ result.improvement }}</p>
+          </div>
         </div>
       </div>
     </mat-card-content>

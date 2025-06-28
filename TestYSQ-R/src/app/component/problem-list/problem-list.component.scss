@@ -44,6 +44,27 @@
   gap: 1rem;
 }
 
+.radio-group mat-radio-button {
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+  width: 100%; /* Make the radio button take full width */
+  display: block; /* Ensure it behaves like a block element */
+}
+
+.radio-group mat-radio-button:hover {
+  background-color: #f0f0f0; /* Subtle background change on hover */
+  cursor: pointer;
+}
+
+/* Target the internal label to make it fill the width */
+.radio-group mat-radio-button ::ng-deep .mat-mdc-radio-label {
+  width: 100%;
+  height: 100%; /* Ensure it takes full height as well */
+  display: flex; /* Use flexbox to align content */
+  align-items: center; /* Vertically center the content */
+}
+
 .navigation-buttons {
   margin-top: 2rem;
   display: flex;

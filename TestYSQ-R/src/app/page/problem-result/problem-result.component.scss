@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.result-card {
+  width: 100%;
+  max-width: 600px;
+}
+
+.result-list {
+  padding: 1rem 0;
+}
+
+.result-item {
+  margin-bottom: 1.5rem;
+}
+
+.result-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.block-title {
+  font-weight: 500;
+}
+
+.average-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.score-bar {
+  height: 10px;
+  border-radius: 5px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}

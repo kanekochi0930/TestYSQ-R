@@ -18,11 +18,17 @@ jobs:
         with: { node-version: 20 }
       - run: npm ci
         working-directory: TestYSQ-R
-      - run: |
-          npm run build -- --configuration production --base-href /testYSQ-R/
+      - name: Build application
+        run: npm run build -- --configuration production --base-href /testYSQ-R/
         working-directory: TestYSQ-R
-      - run: cp TestYSQ-R/docs/index.html TestYSQ-R/docs/404.html
-      - uses: actions/upload-pages-artifact@v3
+      - name: List build output
+        run: ls -R
+        working-directory: TestYSQ-R
+      - name: Copy index to 404
+        run: cp docs/index.html docs/404.html
+        working-directory: TestYSQ-R
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: TestYSQ-R/docs
 

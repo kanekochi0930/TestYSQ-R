@@ -19,10 +19,7 @@ jobs:
       - run: npm ci
         working-directory: TestYSQ-R
       - name: Build application
-        run: npm run build -- --configuration production --base-href /testYSQ-R/
-        working-directory: TestYSQ-R
-      - name: Display index.html content
-        run: cat docs/browser/index.html
+        run: npm run build -- --configuration production --base-href ./
         working-directory: TestYSQ-R
       - name: Copy index to 404
         run: cp docs/browser/index.html docs/browser/404.html

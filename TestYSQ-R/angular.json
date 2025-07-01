@@ -41,7 +41,8 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/testYSQ-R/"
             },
             "development": {
               "optimization": false,

@@ -1,0 +1,99 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.result-card {
+  width: 100%;
+  max-width: 600px;
+}
+
+.result-list {
+  padding: 1rem 0;
+}
+
+.result-item {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Add transform to transition */
+  cursor: pointer; /* Add cursor pointer to indicate clickability */
+}
+
+.result-item:hover {
+  /* Add hover effect */
+  background-color: #f5f5f5; /* Lighter background on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transform: translateY(-2px); /* Slightly lift the item */
+}
+
+.result-item.strong-schema {
+  background-color: #fff0f0;
+}
+
+.result-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.block-title {
+  font-weight: 500;
+  flex-shrink: 1;
+}
+
+.strong-badge {
+  background-color: #ff4081;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.average-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.score-bar {
+  height: 10px;
+  border-radius: 5px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.details-section {
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.details-section h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #3f51b5; /* Primary color */
+}
+
+.details-section h4 {
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  color: #673ab7; /* Accent color */
+}
+
+.details-section p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}

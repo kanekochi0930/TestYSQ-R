@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="progress-container">
+    <mat-progress-bar mode="determinate" [value]="progress" class="progress-bar"></mat-progress-bar>
+    <span class="progress-label">{{ progress.toFixed(0) }}%</span>
+  </div>
+
+  <div class="card-container" [style.minHeight]="cardContainerHeight">
+    <form [formGroup]="statementsGroup">
+      <ng-container *ngFor="let problem of flatProblems; let i = index">
+        <div
+          *ngIf="currentIndex === i"
+          [@cardAnimation]="animationDirection"
+          class="animated-card-wrapper"
+          #currentCardWrapper
+        >
+          <mat-card class="problem-statement-card">
+            <mat-card-header>
+              <mat-card-title>設問 {{ currentIndex + 1 }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="problem-text">{{ problem.problemStatement }}</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-radio-group
+            class="radio-group"
+            [formControlName]="problem.formControlName"
+            (change)="onSelectionChange()"
+          >
+            <mat-radio-button value="1">1.まったく当てはまらない</mat-radio-button>
+            <mat-radio-button value="2">2.ほとんど当てはまらない</mat-radio-button>
+            <mat-radio-button value="3">3.どちらかと言えば当てはまる</mat-radio-button>
+            <mat-radio-button value="4">4.まぁまぁ当てはまる</mat-radio-button>
+            <mat-radio-button value="5">5.ほとんど当てはまる</mat-radio-button>
+            <mat-radio-button value="6">6.完璧に当てはまる</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+
+  <div class="navigation-buttons">
+    <button mat-stroked-button (click)="previousQuestion()" [disabled]="currentIndex === 0">
+      戻る
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="currentIndex < flatProblems.length - 1"
+      (click)="nextQuestion()"
+      [disabled]="!statementsGroup.controls[flatProblems[currentIndex].formControlName].valid"
+    >
+      次へ
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="currentIndex === flatProblems.length - 1"
+      (click)="finish()"
+      [disabled]="statementsGroup.invalid"
+    >
+      回答終了
+    </button>
+  </div>
+  <!-- よくわからないタイミングでエラーメッセージとして表示されるので、一旦コメントアウト。関連処理と一緒に削除したい。 -->
+  <!-- <div class="error-message" *ngIf="statementsGroup.invalid && statementsGroup.touched">
+    すべての質問に回答してください。
+  </div> -->
+</div>

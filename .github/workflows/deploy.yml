@@ -24,7 +24,7 @@ jobs:
         working-directory: TestYSQ-R
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./TestYSQ-R/docs
+          path: TestYSQ-R/docs
 
   deploy:
     needs: build

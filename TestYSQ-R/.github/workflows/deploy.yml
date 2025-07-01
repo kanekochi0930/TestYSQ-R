@@ -2,33 +2,40 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) ソース取得
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2) Node セットアップ
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Use a Node.js version compatible with your Angular project
+          node-version: "20"
 
+      # 3) 依存インストール
       - name: Install dependencies
         run: npm ci
-        working-directory: TestYSQ-R # Run npm ci in your project directory
+        working-directory: TestYSQ-R
 
+      # 4) ビルド & 404 対策
       - name: Build Angular application
-        run: npm run build -- --base-href /TestYSQ-R/ # Adjust base-href if your repo name is different
-        working-directory: TestYSQ-R # Run build in your project directory
+        run: |
+          npm run build -- --configuration production --base-href /TestYSQ-R/
+          cp docs/index.html docs/404.html       # SPA用フォールバック
+        working-directory: TestYSQ-R
 
+      # 5) GitHub Pages へデプロイ
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./TestYSQ-R # Path to your built docs folder
-          publish_branch: gh-pages # This will create/update the gh-pages branch
+          publish_branch: gh-pages
+          publish_dir: ./TestYSQ-R/docs # ← 出力先を指定
+          enable_jekyll: false # .nojekyll を自動配置

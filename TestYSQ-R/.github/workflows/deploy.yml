@@ -3,6 +3,7 @@ name: Pages deploy (Angular)
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 # Pages 用の権限（artifact デプロイ方式）
 permissions:

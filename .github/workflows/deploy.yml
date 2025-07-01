@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
         working-directory: TestYSQ-R
       - run: |
-          npm run build -- --configuration production --base-href /TestYSQ-R/
+          npm run build -- --configuration production --base-href /testYSQ-R/
           cp docs/index.html docs/404.html
         working-directory: TestYSQ-R
       - uses: actions/upload-pages-artifact@v3

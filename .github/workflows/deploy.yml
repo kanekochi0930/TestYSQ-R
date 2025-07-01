@@ -1,34 +1,37 @@
-name: Deploy to GitHub Pages
+name: Pages deploy (Angular)
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+        working-directory: TestYSQ-R
+      - run: |
+          npm run build -- --configuration production --base-href /TestYSQ-R/
+          cp docs/index.html docs/404.html
+        working-directory: TestYSQ-R
+      - uses: actions/upload-pages-artifact@v2
         with:
-          node-version: "20" # Use a Node.js version compatible with your Angular project
+          path: ./TestYSQ-R/docs
 
-      - name: Install dependencies
-        run: npm ci
-        working-directory: TestYSQ-R # Run npm ci in your project directory
-
-      - name: Build Angular application
-        run: npm run build -- --base-href /TestYSQ-R/ # Adjust base-href if your repo name is different
-        working-directory: TestYSQ-R # Run build in your project directory
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./TestYSQ-R/docs # Path to your built docs folder
-          publish_branch: gh-pages # This will create/update the gh-pages branch
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

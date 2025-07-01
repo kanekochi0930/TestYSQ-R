@@ -21,16 +21,13 @@ jobs:
       - name: Build application
         run: npm run build -- --configuration production --base-href /testYSQ-R/
         working-directory: TestYSQ-R
-      - name: List build output
-        run: ls -R
-        working-directory: TestYSQ-R
       - name: Copy index to 404
-        run: cp docs/index.html docs/404.html
+        run: cp docs/browser/index.html docs/browser/404.html
         working-directory: TestYSQ-R
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: TestYSQ-R/docs
+          path: TestYSQ-R/docs/browser
 
   deploy:
     needs: build

@@ -1,52 +1,34 @@
-name: Pages deploy (Angular)
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
-
-# Pages 用の権限（artifact デプロイ方式）
-permissions:
-  pages: write
-  id-token: write
+    branches:
+      - main
 
 jobs:
-  build: # ① ビルドとアーティファクト作成
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20" # Use a Node.js version compatible with your Angular project
 
       - name: Install dependencies
         run: npm ci
-        working-directory: TestYSQ-R
+        working-directory: TestYSQ-R # Run npm ci in your project directory
 
-      - name: Build Angular app
-        run: |
-          npm run build -- --configuration production --base-href /TestYSQ-R/
-          cp docs/index.html docs/404.html        # SPA フォールバック
-        working-directory: TestYSQ-R
+      - name: Build Angular application
+        run: npm run build -- --base-href /TestYSQ-R/ # Adjust base-href if your repo name is different
+        working-directory: TestYSQ-R # Run build in your project directory
 
-      # ★ ここに入れる ★
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./TestYSQ-R/docs # ← ビルド成果物の実パス
-          name: github-pages # artifact 名（任意）
-          retention-days: 1 # 保存日数（任意）
-
-  deploy: # ② アーティファクトを GitHub Pages へ反映
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./TestYSQ-R/docs # Path to your built docs folder
+          publish_branch: gh-pages # This will create/update the gh-pages branch

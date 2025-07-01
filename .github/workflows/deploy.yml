@@ -22,7 +22,7 @@ jobs:
           npm run build -- --configuration production --base-href /TestYSQ-R/
           cp docs/index.html docs/404.html
         working-directory: TestYSQ-R
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: ./TestYSQ-R/docs
 
